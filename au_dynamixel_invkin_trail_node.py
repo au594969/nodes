@@ -37,11 +37,11 @@ def invkin(xyz):
 	
 	
 	# Calculate q2 and q3
-	r2 = (xc - a1*math.cos(q1))**2 + (yc - a1*math.sin(q1))**2 # radius squared - radius can never be negative, q1 accounts for this..
-	s = (zc - d1) # can be negative ! (below first joint height..)
-	D = ( r2 + s**2 - a2**2 - d4**2)/(2*a2*d4)   # Eqn. (3.44)
+	r2 = (xc - a1*math.cos(q1))**2 + (yc - a1*math.sin(q1))**2 	# radius squared - radius can never be negative, q1 accounts for this..
+	s = (zc - d1) 												# can be negative ! (below first joint height..)
+	D = ( r2 + s**2 - a2**2 - d4**2)/(2*a2*d4)   				# Eqn. (3.44)
 	
-	q3 = math.atan2(-math.sqrt(1-D**2), D) #  Eqn. (3.46)
+	q3 = math.atan2(-math.sqrt(1-D**2), D) 						#  Eqn. (3.46)
 	q2 = math.atan2(s, math.sqrt(r2)) - math.atan2(d4*math.sin(q3), a2 + d4*math.cos(q3)) # Eqn. (3.47)
 	
 	
@@ -105,7 +105,7 @@ class ActionExampleNode:
 		print(self.client.get_result())
 
 if __name__ == "__main__":
-	rospy.init_node("au_dynamixel_test_node")
+	rospy.init_node("au_dynamixel_invkin_trial_node")
 
 	node= ActionExampleNode("/arm_controller/follow_joint_trajectory")
 
