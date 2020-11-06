@@ -36,15 +36,15 @@ def invkin(xyz):
 	q1 = math.atan2(yc, xc)  # NOTE: Order of y and x.. depend on math.atan2 func..
 	
 	
-	# Calculate q2 and q3
-	r2 = (xc - a1*math.cos(q1))**2 + (yc - a1*math.sin(q1))**2 	# radius squared - radius can never be negative, q1 accounts for this..
-	s = (zc - d1) 												# can be negative ! (below first joint height..)
-	D = ( r2 + s**2 - a2**2 - d4**2)/(2*a2*d4)   				# Eqn. (3.44)
+		# Calculate q2 and q3
+	s2 = (xc - a1*math.cos(q1))**2 + (yc - a1*math.sin(q1))**2 # radius squared - radius can never be negative, q1 accounts for this..
+	r = (zc - d1) # can be negative ! (below first joint height..)
+	D = ( s2 + r**2 - a2**2 - d4**2)/(2*a2*d4)   # Eqn. (3.44)
 	
-	q3 = math.atan2(-math.sqrt(1-D**2), D) 						#  Eqn. (3.46)
-	q2 = math.atan2(s, math.sqrt(r2)) - math.atan2(d4*math.sin(q3), a2 + d4*math.cos(q3)) # Eqn. (3.47)
+	q3 = math.atan2(-math.sqrt(1-D**2), D) #  Eqn. (3.46)
+	q2 = math.atan2(math.sqrt(s2),r) - math.atan2(d4*math.sin(q3), a2 + d4*math.cos(q3)) # Eqn. (3.47)  				# Eqn. (3.44)
 	
-	
+		
 	# calculate q4 - ie. rotation part
 	# r32 = R(3,2);
 	# r23 = R(2,3);
@@ -52,8 +52,8 @@ def invkin(xyz):
 	# q4 = math.atan2(r23/c23, r32/c23); 
 	q4 = 0 # not consider rotation so far..
 
-	print(q1,-q2,q3,q4)
-	return q1,-q2,q3,q4
+	print(q1,q2,q3,q4)
+	return q1,q2,q3,q4
 
 class ActionExampleNode:
 
@@ -72,9 +72,9 @@ class ActionExampleNode:
 
 		xarr = [x for x in range(-30,31,1)]
 
-		yarr = [-20]*len(xarr)
+		yarr = [-15]*len(xarr)
 
-		zarr = [1]*len(xarr)
+		zarr = [30]*len(xarr)
 		
 
 
@@ -91,7 +91,7 @@ class ActionExampleNode:
 		# construct a list of joint positions by calling invkin for each xyz point
 		for p in range(61):
 			jtp = JointTrajectoryPoint(positions=invkin([xarr[p],yarr[p],zarr[p]]),velocities=[0.5]*self.N_JOINTS ,time_from_start=dur)
-			dur += rospy.Duration(0.2)
+			dur += rospy.Duration(0.1)
 			self.joint_positions.append(jtp)
 
 		self.jt = JointTrajectory(joint_names=self.names, points=self.joint_positions)

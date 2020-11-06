@@ -37,12 +37,12 @@ def invkin(xyz):
 	
 	
 	# Calculate q2 and q3
-	r2 = (xc - a1*math.cos(q1))**2 + (yc - a1*math.sin(q1))**2 # radius squared - radius can never be negative, q1 accounts for this..
-	s = (zc - d1) # can be negative ! (below first joint height..)
-	D = ( r2 + s**2 - a2**2 - d4**2)/(2*a2*d4)   # Eqn. (3.44)
+	s2 = (xc)**2 + (yc)**2 # radius squared - radius can never be negative, q1 accounts for this..
+	r = (zc - d1) # can be negative ! (below first joint height..)
+	D = ( s2 + r**2 - a2**2 - d4**2)/(2*a2*d4)   # Eqn. (3.44)
 	
 	q3 = math.atan2(-math.sqrt(1-D**2), D) #  Eqn. (3.46)
-	q2 = math.atan2(s, math.sqrt(r2)) - math.atan2(d4*math.sin(q3), a2 + d4*math.cos(q3)) # Eqn. (3.47)
+	q2 = math.atan2(math.sqrt(s2),r) - math.atan2(d4*math.sin(q3), a2 + d4*math.cos(q3)) # Eqn. (3.47)
 	
 	
 	# calculate q4 - ie. rotation part
@@ -68,9 +68,9 @@ class ActionExampleNode:
 				]
 		# the list of xyz points we want to plan
 		xyz_positions = [
-		[0.2, 0.0, 0.2],
-		[0.25, 0.1, 0.2],
-		[0.2, 0.2, 0.2]
+		[20, 0.0, 20], #cm
+		[25, 10, 20],  #cm
+		[20, 20, 20]   #cm
 		]
 		# initial duration
 		dur = rospy.Duration(1)
